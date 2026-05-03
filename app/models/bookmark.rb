@@ -8,6 +8,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  account_id :bigint(8)        not null
+#  folder_id  :bigint(8)
 #  status_id  :bigint(8)        not null
 #
 
@@ -18,6 +19,7 @@ class Bookmark < ApplicationRecord
 
   belongs_to :account, inverse_of: :bookmarks
   belongs_to :status,  inverse_of: :bookmarks
+  belongs_to :folder, class_name: 'BookmarkFolder', optional: true
 
   validates :status_id, uniqueness: { scope: :account_id }
 
