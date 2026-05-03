@@ -6,7 +6,8 @@ class Api::V1::Statuses::BookmarksController < Api::V1::Statuses::BaseController
   skip_before_action :set_status, only: [:destroy]
 
   def create
-    current_account.bookmarks.find_or_create_by!(account: current_account, status: @status)
+    bookmark = current_account.bookmarks.find_or_initialize_by(status: @status)
+    bookmark.update!(bookmark_params)
     render json: @status, serializer: REST::StatusSerializer
   end
 
@@ -25,5 +26,11 @@ class Api::V1::Statuses::BookmarksController < Api::V1::Statuses::BaseController
     render json: @status, serializer: REST::StatusSerializer, relationships: StatusRelationshipsPresenter.new([@status], current_account.id, bookmarks_map: { @status.id => false })
   rescue ActiveRecord::RecordNotFound, Mastodon::NotPermittedError
     not_found
+  end
+
+  private
+
+  def bookmark_params
+    params.permit(:folder_id)
   end
 end

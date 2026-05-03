@@ -6,6 +6,7 @@ RSpec.describe Bookmark do
   describe 'Associations' do
     it { is_expected.to belong_to(:account).required }
     it { is_expected.to belong_to(:status).required }
+    it { is_expected.to belong_to(:folder).class_name('BookmarkFolder').optional }
   end
 
   describe 'Validations' do
