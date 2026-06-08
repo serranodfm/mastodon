@@ -19,7 +19,7 @@ class Bookmark < ApplicationRecord
 
   belongs_to :account, inverse_of: :bookmarks
   belongs_to :status,  inverse_of: :bookmarks
-  belongs_to :folder, class_name: 'BookmarkFolder', optional: true
+  belongs_to :bookmark_folder, foreign_key: :folder_id, optional: true, inverse_of: :bookmarks
 
   validates :status_id, uniqueness: { scope: :account_id }
 

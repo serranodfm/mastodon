@@ -19,7 +19,7 @@ class BookmarkFolder < ApplicationRecord
 
   belongs_to :account
 
-  has_many :bookmarks, foreign_key: 'folder_id', dependent: :nullify, inverse_of: :folder
+  has_many :bookmarks, foreign_key: 'folder_id', dependent: :nullify, inverse_of: :bookmark_folder
 
   validates :title, presence: true, length: { maximum: TITLE_LENGTH_LIMIT }
 

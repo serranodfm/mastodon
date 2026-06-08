@@ -58,7 +58,7 @@ class StatusCacheHydrator
     payload[:reblogged]           = Status.exists?(account_id: account.id, reblog_of_id: status.id)
     payload[:muted]               = ConversationMute.exists?(account_id: account.id, conversation_id: status.conversation_id)
     payload[:bookmarked]          = Bookmark.exists?(account_id: account.id, status_id: status.id)
-    payload[:bookmark_folder_id]  = payload[:bookmarked] ? Bookmark.where(account_id: account_id, status_id: status.id).pick(:folder_id)&.to_s : nil
+    payload[:bookmark_folder_id]  = payload[:bookmarked] ? Bookmark.where(account_id: account.id, status_id: status.id).pick(:folder_id)&.to_s : nil
     payload[:pinned]              = StatusPin.exists?(account_id: account.id, status_id: status.id) if status.account_id == account.id
     payload[:filtered]            = mapped_applied_custom_filter(account, status)
     payload[:quote_approval][:current_user] = status.quote_policy_for_account(account) if payload[:quote_approval]

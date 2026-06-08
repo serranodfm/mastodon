@@ -7,7 +7,7 @@ class Api::V1::Statuses::BookmarksController < Api::V1::Statuses::BaseController
 
   def create
     bookmark = current_account.bookmarks.find_or_initialize_by(status: @status)
-    bookmark.update!(bookmark_params)
+    bookmark.update!(bookmark_params) if bookmark_params.present? || bookmark.new_record?
     render json: @status, serializer: REST::StatusSerializer
   end
 
@@ -31,6 +31,10 @@ class Api::V1::Statuses::BookmarksController < Api::V1::Statuses::BaseController
   private
 
   def bookmark_params
-    params.permit(:folder_id)
+    permitted = params.permit(:folder_id)
+
+    raise ActiveRecord::RecordNotFound if permitted[:folder_id].present? && !current_account.bookmark_folders.exists?(id: permitted[:folder_id])
+
+    permitted
   end
 end

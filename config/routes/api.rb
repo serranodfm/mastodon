@@ -276,7 +276,6 @@ namespace :api, format: false do
     resources :bookmarks, only: [:index] do
       collection do
         scope module: :bookmark_folders, controller: :bookmarks do
-          get :unfolded
           get 'folders/:bookmark_folder_id', action: :index, as: :folder
         end
       end
